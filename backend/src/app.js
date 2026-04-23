@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -12,12 +13,31 @@ const app = express();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// ✅ FIXED CORS HERE
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://packflow-mocha.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static uploads
 app.use("/uploads", express.static(path.resolve("uploads")));
+
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
@@ -30,7 +50,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/mockups", mockupRoutes);
 app.use("/api/dashboard", dashboardRoutes);
-// Error handler
+
 app.use(errorMiddleware);
 
 export default app;
