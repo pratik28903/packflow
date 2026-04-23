@@ -19,7 +19,8 @@ import {
   TextField,
 } from "@mui/material";
 
-const BASE_URL = "http://localhost:5000";
+// const BASE_URL = "http://localhost:5000";
+const BASE_URL = import.meta.env.VITE_API_URL.replace("/api", "");
 
 const Mockups = () => {
   const [mockups, setMockups] = useState<any[]>([]);
@@ -150,8 +151,7 @@ const Mockups = () => {
                 <CardMedia
                   component="img"
                   height="200"
-                  image={`${BASE_URL}${mockup.imageUrl}`}
-                />
+                  image={`${BASE_URL}/${mockup.imageUrl?.replace(/^\/+/, "")}`} />
 
                 <CardContent>
                   <Typography variant="h6">{mockup.title}</Typography>
