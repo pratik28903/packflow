@@ -1,0 +1,20 @@
+# dependencies
+node_modules
+
+# env files
+.env
+backend/.env
+frontend/.env
+
+# build files
+dist
+build
+
+# uploads (local files)
+uploads
+
+# logs
+*.log
+
+# OS files
+.DS_Store
